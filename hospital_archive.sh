@@ -36,3 +36,4 @@ for log_file in "${logs[@]}"; do
 done
 
 echo "Log rotation complete - $(date)"
+echo "Archived files are in archived_logs/"
