@@ -37,3 +37,4 @@ done
 
 echo "Log rotation complete - $(date)"
 echo "Archived files are in archived_logs/"
+# Archiving process completed successfully
