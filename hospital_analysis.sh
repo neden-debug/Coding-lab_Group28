@@ -35,7 +35,11 @@ process_vitals() {
             }
         ' >> "$CRITICAL_REPORT"
 
-    printf 'Critical alerts saved to %s.\n' "$CRITICAL_REPORT"
+    if [[ $(wc -l < "$CRITICAL_REPORT") -eq 1 ]]; then
+        printf 'No critical vitals found; empty report saved to %s.\n' "$CRITICAL_REPORT"
+    else
+        printf 'Critical alerts saved to %s.\n' "$CRITICAL_REPORT"
+    fi
 }
 
 water_audit() {
