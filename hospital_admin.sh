@@ -27,3 +27,10 @@ secure_data() {
     echo "Permissions updated successfully for active_logs:"
     ls -ld active_logs
 }
+
+main() {
+    initialize_system
+    secure_data
+}
+
+main
