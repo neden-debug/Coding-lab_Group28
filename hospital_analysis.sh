@@ -53,8 +53,24 @@ water_audit() {
         END {
             if (count > 0) {
                 avg = sum / count;
-                print "Average ICU_WATER_RESERVE:", avg;
+                printf "Target Facility      : ICU_WATER_RESERVE\n";
+                printf "Total Data Points    : %d\n", count;
+                printf "Total Water Drawn    : %.2f L\n", sum;
+                printf "Average Consumption  : %.2f L/hr\n", avg;
+            } else {
+                printf "Target Facility      : ICU_WATER_RESERVE\n";
+                printf "Status               : No records found for ICU_WATER_RESERVE.\n";
             }
         }' active_logs/*water*.log
+    else
+        printf "Status: No water consumption log found in active_logs/.\n"
     fi
+    echo "------------------------------------------"
 }
+
+main() {
+    process_vitals
+    water_audit
+}
+
+main
