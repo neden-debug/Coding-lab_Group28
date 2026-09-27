@@ -23,6 +23,7 @@ initialize_system() {
 
 secure_data() {
     echo "[M2] Applying strict access controls to active_logs..."
-    # Restrict permissions: Only owner can read, write, and execute/traverse
     chmod 700 active_logs
+    echo "Permissions updated successfully for active_logs:"
+    ls -ld active_logs
 }
