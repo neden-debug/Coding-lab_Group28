@@ -18,7 +18,6 @@ process_vitals() {
             vitals_found=1
             grep "CRITICAL" "$log_file" | awk -F'[, ]+' '
             {
-                # Extract Timestamp, Device_ID, and Value
                 ts = $1 " " $2;
                 dev = $3;
                 val = $4;
@@ -38,4 +37,24 @@ water_audit() {
     echo "------------------------------------------"
     echo " Resource Audit: Facility Water Usage"
     echo "------------------------------------------"
+
+    local water_logs=(active_logs/*water*.log)
+    if [ -f "${water_logs[0]}" ]; then
+        awk -F'[, ]+' '
+        /ICU_WATER_RESERVE/ {
+            for (i = 1; i <= NF; i++) {
+                if (\(i ~ /^[0-9]+(\.[0-9]+)?\)/) {
+                    sum += $i;
+                    count++;
+                    break;
+                }
+            }
+        }
+        END {
+            if (count > 0) {
+                avg = sum / count;
+                print "Average ICU_WATER_RESERVE:", avg;
+            }
+        }' active_logs/*water*.log
+    fi
 }
