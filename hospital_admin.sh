@@ -4,6 +4,14 @@
 set -euo pipefail
 
 initialize_system() {
-    # Member 1: Check and initialize directories
     echo "[M1] Checking core hospital system directories..."
+    local dirs=("active_logs" "archived_logs" "reports")
+
+    for dir in "${dirs[@]}"; do
+        if [ -d "$dir" ]; then
+            echo "Directory '$dir' already exists."
+        else
+            mkdir -p "$dir"
+        fi
+    done
 }
