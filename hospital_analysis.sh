@@ -16,8 +16,20 @@ process_vitals() {
     for log_file in active_logs/*heart_rate*.log active_logs/*temperature*.log active_logs/*temp*.log; do
         if [ -f "$log_file" ]; then
             vitals_found=1
-            # Filter for CRITICAL alert entries
-            grep "CRITICAL" "$log_file" || true
+            grep "CRITICAL" "$log_file" | awk -F'[, ]+' '
+            {
+                # Extract Timestamp, Device_ID, and Value
+                ts = $1 " " $2;
+                dev = $3;
+                val = $4;
+                printf "Timestamp: %-21s | Device: %-15s | Alert Value: %s\n", ts, dev, val;
+            }' >> "$alert_output" || true
         fi
     done
+
+    if [ "$vitals_found" -eq 1 ]; then
+        echo "[M5] Clinical vitals processed. Alerts saved to $alert_output"
+    else
+        echo "[M5] No active heart rate or temperature logs detected."
+    fi
 }
