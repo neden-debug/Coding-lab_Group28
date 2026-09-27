@@ -31,6 +31,7 @@ secure_data() {
 main() {
     initialize_system
     secure_data
+    echo "System Environment Secured: $(date '+%Y-%m-%d %H:%M:%S')"
 }
 
 main
