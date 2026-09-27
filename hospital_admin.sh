@@ -11,6 +11,7 @@ initialize_system() {
         if [ -d "$dir" ]; then
             echo "Directory '$dir' already exists."
         else
+            echo "Creating $dir directory..."
             mkdir -p "$dir"
         fi
     done
