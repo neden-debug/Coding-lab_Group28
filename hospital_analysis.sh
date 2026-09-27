@@ -18,7 +18,6 @@ process_vitals() {
             vitals_found=1
             grep "CRITICAL" "$log_file" | awk -F'[, ]+' '
             {
-                # Extract Timestamp, Device_ID, and Value
                 ts = $1 " " $2;
                 dev = $3;
                 val = $4;
@@ -33,3 +32,45 @@ process_vitals() {
         echo "[M5] No active heart rate or temperature logs detected."
     fi
 }
+
+water_audit() {
+    echo "------------------------------------------"
+    echo " Resource Audit: Facility Water Usage"
+    echo "------------------------------------------"
+
+    local water_logs=(active_logs/*water*.log)
+    if [ -f "${water_logs[0]}" ]; then
+        awk -F'[, ]+' '
+        /ICU_WATER_RESERVE/ {
+            for (i = 1; i <= NF; i++) {
+                if (\(i ~ /^[0-9]+(\.[0-9]+)?\)/) {
+                    sum += $i;
+                    count++;
+                    break;
+                }
+            }
+        }
+        END {
+            if (count > 0) {
+                avg = sum / count;
+                printf "Target Facility      : ICU_WATER_RESERVE\n";
+                printf "Total Data Points    : %d\n", count;
+                printf "Total Water Drawn    : %.2f L\n", sum;
+                printf "Average Consumption  : %.2f L/hr\n", avg;
+            } else {
+                printf "Target Facility      : ICU_WATER_RESERVE\n";
+                printf "Status               : No records found for ICU_WATER_RESERVE.\n";
+            }
+        }' active_logs/*water*.log
+    else
+        printf "Status: No water consumption log found in active_logs/.\n"
+    fi
+    echo "------------------------------------------"
+}
+
+main() {
+    process_vitals
+    water_audit
+}
+
+main
