@@ -1,28 +1,42 @@
 #!/bin/bash
+# ==============================================================================
+# Script: hospital_admin.sh
+# Description: Environment setup and permission hardening for KNH sensor data.
+# Contributors: Member 1 (Architect), Member 2 (Security), Member 3 (Orchestrator)
+# ==============================================================================
+
+set -euo pipefail
 
 initialize_system() {
-    if [ ! -d "active_logs" ]; then
-        echo "Creating active_logs directory..."
-        mkdir "active_logs"
-    else
-        echo "Directory active_logs already exists."
-    fi
+    echo "[M1] Checking core hospital system directories..."
+    local dirs=("active_logs" "archived_logs" "reports")
 
-    if [ ! -d "archived_logs" ]; then
-        echo "Creating archived_logs directory..."
-        mkdir "archived_logs"
-    else
-        echo "Directory archived_logs already exists."
-    fi
-
-    if [ ! -d "reports" ]; then
-        echo "Creating reports directory..."
-        mkdir "reports"
-    else
-        echo "Directory reports already exists."
-    fi
+    for dir in "${dirs[@]}"; do
+        if [ -d "$dir" ]; then
+            echo "Directory '$dir' already exists."
+        else
+            echo "Creating $dir directory..."
+            mkdir -p "$dir"
+        fi
+    done
 }
 
-initialize_system
+secure_data() {
+    echo "[M2] Applying strict access controls to active_logs..."
+    chmod 700 active_logs
+    echo "Permissions updated successfully for active_logs:"
+    ls -ld active_logs
+}
 
+main() {
+    echo "=========================================="
+    echo " Starting KNH Administrative Setup"
+    echo "=========================================="
+    initialize_system
+    secure_data
+    echo "=========================================="
+    echo "System Environment Secured: $(date '+%Y-%m-%d %H:%M:%S')"
+    echo "=========================================="
+}
 
+main
