@@ -29,9 +29,14 @@ secure_data() {
 }
 
 main() {
+    echo "=========================================="
+    echo " Starting KNH Administrative Setup"
+    echo "=========================================="
     initialize_system
     secure_data
+    echo "=========================================="
     echo "System Environment Secured: $(date '+%Y-%m-%d %H:%M:%S')"
+    echo "=========================================="
 }
 
 main
