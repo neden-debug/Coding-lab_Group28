@@ -40,3 +40,19 @@ main() {
 }
 
 main
+
+# Member 2: Security Lead
+secure_data() {
+    echo "Securing active_logs directory..."
+
+    if [ ! -d "active_logs" ]; then
+        echo "Error: active_logs directory not found. Run initialize_system first."
+        return 1
+    fi
+
+    chmod 700 active_logs
+    chmod 600 active_logs/* 2>/dev/null
+
+    echo "Permissions updated. Current status:"
+    ls -l active_logs
+}
