@@ -1,5 +1,9 @@
 #!/bin/bash
-# KNH Digital Infrastructure - Admin & Setup Script
+# ==============================================================================
+# Script: hospital_admin.sh
+# Description: Environment setup and permission hardening for KNH sensor data.
+# Contributors: Member 1 (Architect), Member 2 (Security), Member 3 (Orchestrator)
+# ==============================================================================
 
 set -euo pipefail
 
@@ -18,5 +22,7 @@ initialize_system() {
 }
 
 secure_data() {
-    echo "[M2] Security Lead: Starting permission verification..."
+    echo "[M2] Applying strict access controls to active_logs..."
+    # Restrict permissions: Only owner can read, write, and execute/traverse
+    chmod 700 active_logs
 }
