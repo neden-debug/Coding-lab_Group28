@@ -31,5 +31,13 @@ rotate_logs() {
         local archive_destination="archived_logs/\({name}_\){timestamp}.${ext}"
         echo "Moving: \(file ->\)archive_destination"
         mv "\(file" "\)archive_destination"
+
+        # System continuity: recreate empty log file so Python engine keeps logging
+        touch "$file"
+        echo "Recreated empty active log for continuity: $file"
     done
+
+    echo "=== Rotation Complete ==="
 }
+
+rotate_logs
