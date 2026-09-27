@@ -33,3 +33,9 @@ process_vitals() {
         echo "[M5] No active heart rate or temperature logs detected."
     fi
 }
+
+water_audit() {
+    echo "------------------------------------------"
+    echo " Resource Audit: Facility Water Usage"
+    echo "------------------------------------------"
+}
